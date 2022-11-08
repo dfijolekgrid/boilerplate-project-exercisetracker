@@ -13,7 +13,6 @@ app.use(cors());
 app.use(express.static("public"));
 
 app.use("/api/users", usersRouter);
-// app.use("/api/users/:_id/logs", logsRouter);
 
 try {
   setupDB();
@@ -21,28 +20,6 @@ try {
   console.error(err);
   exit;
 }
-
-// try {
-//     const exercice = insertExercise(1, "TEST", 5);
-//     console.log(exercice);
-// } catch (err: any) {
-//     if (err.code === "SQLITE_CONSTRAINT_UNIQUE") {
-//         console.error("username already taken");
-//     } else {
-//         console.error("faild to connect to database");
-//     }
-// }
-
-// try {
-//     const exercices = getExercises(2);
-//     console.log(exercices);
-// } catch (err: any) {
-//     if (err.code === "SQLITE_CONSTRAINT_UNIQUE") {
-//         console.error("username already taken");
-//     } else {
-//         console.error("faild to connect to database");
-//     }
-// }
 
 const listener = app.listen(process.env.PORT || 3000, () => {
   const adress = listener.address()!;

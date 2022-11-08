@@ -3,7 +3,6 @@ import Database from "better-sqlite3";
 import { readFileSync } from "fs";
 import { User } from "./types/IUser";
 import { Exercise } from "./types/IExercise";
-import { time } from "console";
 
 const DB_PATH = path.join(__dirname, "test.db");
 const MYDB_PATH = path.join(__dirname, "mydb.sql");
@@ -81,7 +80,6 @@ export function insertExercise(
     const insertExercise = db.prepare(
       'INSERT INTO Exercises (userId, "description", duration, "date") VALUES (?, ? , ?, ?)'
     );
-    console.log(userId, description, duration, date);
     const info = insertExercise.run(userId, description, duration, timestamp);
     return {
       id: info.lastInsertRowid,
