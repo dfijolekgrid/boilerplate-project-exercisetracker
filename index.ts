@@ -1,13 +1,7 @@
 import express from "express";
 import cors from "cors";
 import * as dotenv from "dotenv";
-import {
-    setupDB,
-    insertUser,
-    getUsers,
-    insertExercise,
-    getExercises,
-} from "./db";
+import { setupDB } from "./db";
 import { usersRouter } from "./routes/users";
 import { exit } from "process";
 
@@ -19,14 +13,13 @@ app.use(cors());
 app.use(express.static("public"));
 
 app.use("/api/users", usersRouter);
-// app.use("/api/users/:_id/exercises", exercisesRouter);
 // app.use("/api/users/:_id/logs", logsRouter);
 
 try {
-    setupDB();
+  setupDB();
 } catch (err) {
-    console.error(err);
-    exit;
+  console.error(err);
+  exit;
 }
 
 // try {
@@ -52,8 +45,8 @@ try {
 // }
 
 const listener = app.listen(process.env.PORT || 3000, () => {
-    const adress = listener.address()!;
-    if (typeof adress !== "string") {
-        console.log(`Your app is listening on port ${adress.port}`);
-    }
+  const adress = listener.address()!;
+  if (typeof adress !== "string") {
+    console.log(`Your app is listening on port ${adress.port}`);
+  }
 });
