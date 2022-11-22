@@ -1,4 +1,4 @@
-import { param, body, validationResult } from "express-validator";
+import { param, query, validationResult } from "express-validator";
 
 import { getUser, getExercises } from "../db";
 
@@ -6,9 +6,9 @@ import { dateFromTimestamp } from "../utils/dateFromTimestamp";
 
 export const get_logs_controller = [
   param("_id", "User ID must be number").toInt().isNumeric(),
-  body("limit", "limit must be number > 0").optional().isInt({ min: 1 }),
-  body("from", "from must be valid format of date").optional().isDate(),
-  body("to", "to must be valid format of date").optional().isDate(),
+  query("limit", "limit must be number > 0").optional().isInt({ min: 1 }),
+  query("from", "from must be valid format of date").optional().isDate(),
+  query("to", "to must be valid format of date").optional().isDate(),
 
   function (req: any, res: any) {
     const errors = validationResult(req);
@@ -19,17 +19,21 @@ export const get_logs_controller = [
     try {
       let exercices = getExercises(
         req.params!._id,
-        req.body?.from,
-        req.body?.to
+        req.query?.from,
+        req.query?.to
       );
       const user = getUser(req.params!._id);
 
       const count = exercices?.length;
 
-      exercices = req.body.limit
-        ? exercices?.slice(0, req.body.limit)
+      exercices = req.query.limit
+        ? exercices?.slice(0, req.query.limit)
         : exercices;
-      const newExercices = exercices?.map((element) => {
+
+      const sortedExercices = exercices?.sort((a, b) =>
+        a.date > b.date ? 1 : -1
+      );
+      const newExercices = sortedExercices?.map((element) => {
         const date = dateFromTimestamp(element!.date);
         return {
           id: element.id,
